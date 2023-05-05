@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      injectable_generator:injectable_builder:
+        options:
+          auto_register: true
+          class_name_pattern:
+            "Service$|Repository$|Bloc$|ViewModel$"
+          file_name_pattern: "_service$|_repository$|_bloc$|_viewmodel$"
