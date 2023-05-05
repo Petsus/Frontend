@@ -38,8 +38,7 @@ stages:
         tags: |
           $(tag)
     - task: AzureWebAppContainer@1
-      displayName: 'Azure Web App on Container Deploy'
       inputs:
-        azureSubscription: $(azureSubscription)
-        appName: $(appName)
-        imageName: $(containerRegistry)/$(imageRepository):$(tag)
+        azureSubscription: 'Azure subscription 1 (965150e6-fb45-4c50-9947-6d4b23bd3177)'
+        appName: 'petsus-frontend-dev'
+        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
