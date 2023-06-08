@@ -48,46 +48,49 @@ class TccPage extends StatelessWidget {
 
   Widget _createOption(BuildContext context, String title, String subtitle, String url, String tag) {
     return Expanded(
-      child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(
-            color: Colors.white,
-            width: 1.0
+      child: GestureDetector(
+        onTap: () => window.open(url, 'new tab'),
+        child: Card(
+          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(
+              color: Colors.white,
+              width: 1.0
+            ),
+            borderRadius: BorderRadius.circular(16),
           ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        color: ColorApp.primaryContainer.color,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 32),
-                child: Center(
-                  child: Text(tag),
+          color: ColorApp.primaryContainer.color,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 32),
+                  child: Center(
+                    child: Text(tag),
+                  ),
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(color: ColorApp.background.color, borderRadius: BorderRadius.circular(16)),
                 ),
-                height: 32,
-                width: 32,
-                decoration: BoxDecoration(color: ColorApp.background.color, borderRadius: BorderRadius.circular(16)),
-              ),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 64),
-              Text(
-                'Ir para a página',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 64),
+                Text(
+                  'Ir para a página',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
         ),
       ),
