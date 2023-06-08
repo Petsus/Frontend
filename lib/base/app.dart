@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petsus/page/login/login_page.dart';
+import 'package:petsus/page/tcc/tcc_page.dart';
 import 'package:petsus/util/resources/app_color.dart';
 
 class ThemeApp extends StatelessWidget {
@@ -8,6 +9,9 @@ class ThemeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/tcc' : (context) => const TccPage(),
+      },
       debugShowCheckedModeBanner: false,
       theme: _themeData(),
       darkTheme: _themeData(),
