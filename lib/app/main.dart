@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
-import 'package:petsus/base/theme_app.dart';
 import 'package:petsus/app/injection.dart';
 import 'package:petsus/app/main.reflectable.dart';
+import 'package:petsus/base/configuration.dart';
+import 'package:petsus/base/theme_app.dart';
 import 'package:petsus/util/resources/resources.dart';
 
 void main() async {
+  await Configuration.load();
+
   initializeReflectable();
-  configureInjection(Environment.dev);
+  configureInjection(Configuration.environment);
 
   WidgetsFlutterBinding.ensureInitialized();
   await loadBaseResources();
