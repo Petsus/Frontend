@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:petsus/injection.dart';
+import 'package:petsus/app/injection.dart';
 import 'package:reflectable/reflectable.dart';
 
 abstract class BaseModel {

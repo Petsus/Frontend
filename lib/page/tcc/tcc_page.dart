@@ -1,8 +1,6 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:petsus/component/button/button_full.dart';
-import 'package:petsus/component/card/card_app.dart';
 import 'package:petsus/util/resources/app_color.dart';
 
 const String urlBackend = 'https://github.com/gluan2018/TCC-Backend';
