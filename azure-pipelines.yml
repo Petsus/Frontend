@@ -22,7 +22,34 @@ variables:
 stages:
 - stage: Build
   displayName: Build and push stage
+  variables:
+    - group: Development Fronted
   jobs:
+  - job: Configuration
+    displayName: Configuration
+    steps:
+     - task: CopyFiles@2
+       displayName: Creating archive .env
+       inputs:
+         SourceFolder: '$(Build.SourcesDirectory)/.env-example'
+         Contents: '**'
+         TargetFolder: '$(Build.SourcesDirectory)/.env'
+     - task: replacetokens@5
+       displayName: Replacing tokens
+       inputs:
+         targetFiles: '**/.env'
+         encoding: 'auto'
+         tokenPattern: 'custom'
+         tokenPrefix: '#{'
+         tokenSuffix: '}#'
+         writeBOM: true
+         actionOnMissing: 'warn'
+         keepToken: false
+         actionOnNoFiles: 'continue'
+         enableTransforms: false
+         enableRecursion: false
+         useLegacyPattern: false
+         enableTelemetry: true
   - job: Build
     displayName: Build
     pool:
