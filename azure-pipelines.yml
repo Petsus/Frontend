@@ -30,12 +30,11 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: CopyFiles@2
+    - task: PowerShell@2
       displayName: Creating archive .env in $(Build.ArtifactStagingDirectory)
       inputs:
-        SourceFolder: '$(Build.SourcesDirectory)/assets/.env.example'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)/assets/.env'
+        targetType: inline
+        script:  Copy-Item -Path ren '$(Build.SourcesDirectory)/assets/.env.example' -Destination '$(Build.ArtifactStagingDirectory)/assets/.env'
     - task: replacetokens@5
       displayName: Replacing tokens
       inputs:
