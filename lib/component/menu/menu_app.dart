@@ -5,17 +5,15 @@ import 'package:petsus/util/resources/app_color.dart';
 class MenuApp extends StatefulWidget {
   final List<SideMenuItem> itemsMenu;
   final PageController pageController;
+  final VoidCallback? logout;
   final NullableIndexedWidgetBuilder itemBuilder;
-  final Widget? footer;
-  final bool showAlwaysFooter;
 
   const MenuApp({
     Key? key,
+    this.logout,
     required this.itemsMenu,
     required this.itemBuilder,
     required this.pageController,
-    this.footer,
-    this.showAlwaysFooter = false,
   }) : super(key: key);
 
   @override
@@ -28,7 +26,7 @@ class _MenuAppState extends State<MenuApp> {
   @override
   void initState() {
     menuController.addListener((index) {
-        widget.pageController.jumpToPage(index);
+      widget.pageController.jumpToPage(index);
     });
     super.initState();
   }
@@ -41,8 +39,13 @@ class _MenuAppState extends State<MenuApp> {
           items: widget.itemsMenu,
           controller: menuController,
           showToggle: true,
-          footer: widget.footer,
-          alwaysShowFooter: widget.showAlwaysFooter,
+          footer: SideMenuItem(
+            priority: 10,
+            title: 'Logout',
+            icon: const Icon(Icons.logout),
+            onTap: (index, _) => widget.logout?.call(),
+          ),
+          alwaysShowFooter: true,
           title: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: SizedBox(

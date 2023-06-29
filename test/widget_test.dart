@@ -7,9 +7,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:petsus/base/app.dart';
+import 'package:petsus/base/theme_app.dart';
 
-import 'package:petsus/main.dart';
+import 'package:petsus/app/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

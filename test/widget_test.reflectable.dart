@@ -2,7 +2,8 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
-import 'package:petsus/injection.dart' as prefix0;
+import 'package:petsus/api/model/user/user.dart' as prefix1;
+import 'package:petsus/app/injection.dart' as prefix0;
 
 // ignore_for_file: camel_case_types
 // ignore_for_file: implementation_imports
@@ -19,7 +20,56 @@ import 'package:reflectable/reflectable.dart' as r show Reflectable;
 
 final _data = <r.Reflectable, r.ReflectorData>{
   const prefix0.Reflector(): r.ReflectorData(
-      <m.TypeMirror>[], null, null, <Type>[], 0, {}, {}, null, [])
+      <m.TypeMirror>[
+        r.NonGenericClassMirrorImpl(
+            r'User',
+            r'.User',
+            134217735,
+            0,
+            const prefix0.Reflector(),
+            const <int>[-1],
+            null,
+            null,
+            -1,
+            {},
+            {},
+            {
+              r'fromJson': (bool b) =>
+                  (map) => b ? prefix1.User.fromJson(map) : null
+            },
+            -1,
+            -1,
+            const <int>[-1],
+            null,
+            {
+              r'==': 1,
+              r'toString': 0,
+              r'noSuchMethod': 1,
+              r'hashCode': 0,
+              r'runtimeType': 0,
+              r'toJson': 0,
+              r'role': 0
+            })
+      ],
+      null,
+      null,
+      <Type>[prefix1.User],
+      1,
+      {
+        r'==': (dynamic instance) => (x) => instance == x,
+        r'toString': (dynamic instance) => instance.toString,
+        r'noSuchMethod': (dynamic instance) => instance.noSuchMethod,
+        r'hashCode': (dynamic instance) => instance.hashCode,
+        r'runtimeType': (dynamic instance) => instance.runtimeType,
+        r'toJson': (dynamic instance) => instance.toJson,
+        r'role': (dynamic instance) => instance.role
+      },
+      {},
+      null,
+      [
+        const [0, 0, null],
+        const [1, 0, null]
+      ])
 };
 
 final _memberSymbolMap = null;

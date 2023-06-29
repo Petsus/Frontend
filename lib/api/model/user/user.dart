@@ -1,17 +1,19 @@
 
+import 'dart:convert';
+
 import 'package:petsus/api/manager/base_model.dart';
-import 'package:petsus/injection.dart';
+import 'package:petsus/app/injection.dart';
 
 enum Level {
-  adm, user, clinic
+  adm, user, admClinic, userClinic, admTownHall
 }
 
 @reflector
 class User extends BaseModel {
-  final Level role;
+  final List<Level> role;
 
   User.fromJson(super.map) :
-        role = Level.values.byName((map["role"] as String).toLowerCase()),
+        role = (jsonDecode(map["role"]) as List<String>).map((e) => Level.values.byName(e.toLowerCase())).toList(),
         super.fromJson();
 
   @override

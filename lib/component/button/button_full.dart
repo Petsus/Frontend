@@ -15,8 +15,13 @@ class ButtonFull extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: onPressed,
-      child: Text(title),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
       height: 56,
+      minWidth: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       color: ColorApp.primaryContainer.color,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
