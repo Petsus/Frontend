@@ -31,9 +31,9 @@ stages:
      - task: CopyFiles@2
        displayName: Creating archive .env
        inputs:
-         SourceFolder: '$(Build.SourcesDirectory)/.env-example'
+         SourceFolder: '$(Build.SourcesDirectory)/assets/.env-example'
          Contents: '**'
-         TargetFolder: '$(Build.SourcesDirectory)/.env'
+         TargetFolder: '$(Build.SourcesDirectory)/assets/.env'
      - task: replacetokens@5
        displayName: Replacing tokens
        inputs:
