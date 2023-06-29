@@ -34,7 +34,7 @@ stages:
       displayName: Creating archive .env in $(Build.ArtifactStagingDirectory)
       inputs:
         targetType: inline
-        script:  Copy-Item '$(Build.SourcesDirectory)/assets/.env.example' -Destination '$(Build.ArtifactStagingDirectory)/assets/.env'
+        script:  Copy-Item '$(Build.SourcesDirectory)/assets/.env.example' -Destination '$(Build.SourcesDirectory)/assets/.env'
     - task: replacetokens@5
       displayName: Replacing tokens
       inputs:
