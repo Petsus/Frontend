@@ -31,11 +31,11 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: CopyFiles@2
-      displayName: Creating archive .env
+      displayName: Creating archive .env in $(Build.ArtifactStagingDirectory)
       inputs:
-        SourceFolder: 'assets/.env-example'
+        SourceFolder: '$(Build.ArtifactStagingDirectory)/assets/.env-example'
         Contents: '**'
-        TargetFolder: 'assets/.env'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/assets/.env'
     - task: replacetokens@5
       displayName: Replacing tokens
       inputs:
