@@ -23,7 +23,7 @@ stages:
 - stage: Build
   displayName: Build and push stage
   variables:
-    - group: Development Fronted
+    - group: Development Frontend
   jobs:
   - job: Configuration
     displayName: Configuration
