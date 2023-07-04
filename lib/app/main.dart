@@ -5,11 +5,10 @@ import 'package:petsus/app/main.reflectable.dart';
 import 'package:petsus/base/theme_app.dart';
 import 'package:petsus/util/resources/resources.dart';
 
+// await Configuration.load();
+// configureInjection(Configuration.environment);
 void main() async {
-  // await Configuration.load();
-
   initializeReflectable();
-  // configureInjection(Configuration.environment);
   configureInjection(Environment.dev);
 
   WidgetsFlutterBinding.ensureInitialized();

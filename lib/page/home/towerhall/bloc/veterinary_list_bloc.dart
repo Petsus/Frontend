@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
+import 'package:petsus/api/model/veterinary/veterinary.dart';
 import 'package:petsus/base/bloc/base_bloc.dart';
 import 'package:petsus/page/home/towerhall/viewmodel/veterinary_town_hall_viewmodel.dart';
 
@@ -18,7 +19,7 @@ abstract class AbstractVeterinaryListBloc extends BaseBloc with Store {
   int orderBy = 0;
 
   @observable
-  ObservableList<dynamic> veterinaries = ObservableList.of([]);
+  ObservableList<Veterinary> veterinaries = ObservableList.of([]);
 
   @observable
   int page = 1;

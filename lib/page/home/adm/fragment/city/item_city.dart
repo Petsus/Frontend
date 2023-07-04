@@ -60,10 +60,10 @@ class CityItem extends StatelessWidget {
               flex: 8,
               child: Text(city.name),
             ),
-            Expanded(
-              flex: 4,
-              child: Text(city.state.initials),
-            ),
+            // Expanded(
+            //   flex: 4,
+            //   child: Text(city.state.initials),
+            // ),
             Expanded(
               flex: 4,
               child: Align(

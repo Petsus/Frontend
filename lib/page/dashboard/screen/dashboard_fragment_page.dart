@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -7,8 +5,8 @@ import 'package:petsus/api/model/news/news.dart';
 import 'package:petsus/base/bloc/base_bloc.dart';
 import 'package:petsus/base/error/string_formatter.dart';
 import 'package:petsus/component/header/header_search.dart';
-import 'package:petsus/page/home/towerhall/bloc/dashboard_bloc.dart';
-import 'package:petsus/page/home/towerhall/router/dashboard_router.dart';
+import 'package:petsus/page/dashboard/bloc/dashboard_bloc.dart';
+import 'package:petsus/page/dashboard/router/dashboard_router.dart';
 import 'package:petsus/util/components/helper_image.dart';
 import 'package:petsus/util/resources/app_color.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
@@ -69,25 +67,22 @@ class _DashboardFragmentPageState extends State<DashboardFragmentPage> {
             },
           ),
           SizedBox(height: DimenApp.marginDefault.size),
-          Observer(
-            builder: (context) {
-              return Expanded(
+          Observer(builder: (context) {
+            return Expanded(
                 child: _carousel(
-                  title: 'Agenda',
-                  itemCount: widget.bloc.schedulesFiltered.length + 1,
-                  context: context,
-                  builder: (context, index) {
-                    return index >= widget.bloc.schedulesFiltered.length
-                        ? _cardInsert(() => open())
-                        : _cardCarousel(
-                      news: widget.bloc.schedulesFiltered[index],
-                      callback: () => open(news: widget.bloc.schedulesFiltered[index]),
-                    );
-                  },
-                )
-              );
-            }
-          ),
+              title: 'Agenda',
+              itemCount: widget.bloc.schedulesFiltered.length + 1,
+              context: context,
+              builder: (context, index) {
+                return index >= widget.bloc.schedulesFiltered.length
+                    ? _cardInsert(() => open())
+                    : _cardCarousel(
+                        news: widget.bloc.schedulesFiltered[index],
+                        callback: () => open(news: widget.bloc.schedulesFiltered[index]),
+                      );
+              },
+            ));
+          }),
         ],
       ),
     );
@@ -110,21 +105,18 @@ class _DashboardFragmentPageState extends State<DashboardFragmentPage> {
         ),
         SizedBox(height: DimenApp.marginSmall.size),
         Expanded(
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch}),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: itemCount,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(right: DimenApp.marginDefault.size),
-                  child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: builder.call(context, index),
-                  ),
-                );
-              },
-            ),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: itemCount,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(right: DimenApp.marginDefault.size),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: builder.call(context, index),
+                ),
+              );
+            },
           ),
         )
       ],

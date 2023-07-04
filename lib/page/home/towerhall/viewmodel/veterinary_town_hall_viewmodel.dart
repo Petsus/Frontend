@@ -1,4 +1,3 @@
-
 import 'package:petsus/api/model/veterinary/veterinary_list.dart';
 import 'package:petsus/page/home/towerhall/viewmodel/base_town_hall_viewmodel.dart';
 

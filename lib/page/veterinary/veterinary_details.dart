@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petsus/api/model/veterinary/veterinary.dart';
+import 'package:petsus/component/card/card_info.dart';
+import 'package:petsus/util/resources/app_color.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
 
 class VeterinaryDetails extends StatelessWidget {
@@ -17,6 +19,16 @@ class VeterinaryDetails extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.close,
+                  color: ColorApp.onBackground.color,
+                ),
+              ),
+            ),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -39,31 +51,12 @@ class VeterinaryDetails extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 SizedBox(height: DimenApp.marginDefault.size),
-                _card(title: 'CRM:', subtitle: veterinary.crm, context: context),
-                _card(title: 'Especialidades:', subtitle: veterinary.specialities.join('\n'), context: context),
+                InfoCard(title: 'CRM:', subtitle: veterinary.crm),
+                InfoCard(title: 'Especialidades:', subtitle: veterinary.specialities.join('\n')),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _card({
-    required String title,
-    required String subtitle,
-    required BuildContext context,
-  }) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: Theme.of(context).textTheme.titleMedium),
-          SizedBox(height: DimenApp.marginSmall.size),
-          Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
-          SizedBox(height: DimenApp.marginDefault.size),
-        ],
       ),
     );
   }

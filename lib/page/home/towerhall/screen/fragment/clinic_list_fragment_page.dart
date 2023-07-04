@@ -1,20 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
+import 'package:petsus/base/bloc/base_bloc.dart';
+import 'package:petsus/base/error/string_formatter.dart';
 import 'package:petsus/component/button/pagination.dart';
 import 'package:petsus/component/chip/filter_chip.dart';
 import 'package:petsus/component/header/header_search.dart';
 import 'package:petsus/page/home/towerhall/bloc/clinic_list_bloc.dart';
+import 'package:petsus/page/home/towerhall/router/clinic_page_router.dart';
 import 'package:petsus/page/home/towerhall/view/clinic_card.dart';
-import 'package:petsus/page/home/towerhall/viewmodel/town_hall_viewmodel.dart';
 import 'package:petsus/util/resources/app_color.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
 
-class ClinicListFragmentPage extends StatelessWidget {
-  final TextEditingController searchController = TextEditingController();
-  final TownHallViewModel viewModel;
-  final ClinicListBloc bloc;
+class ClinicListFragmentPage extends StatefulWidget {
+  final AbstractClinicListBloc bloc;
+  final IClinicRouter router;
 
-  ClinicListFragmentPage({super.key, required this.viewModel}) : bloc = ClinicListBloc(viewModel: viewModel);
+  const ClinicListFragmentPage({
+    super.key,
+    required this.bloc,
+    required this.router,
+  });
+
+  @override
+  State<ClinicListFragmentPage> createState() => _ClinicListFragmentPageState();
+}
+
+class _ClinicListFragmentPageState extends State<ClinicListFragmentPage> {
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    widget.bloc.load();
+    autorun((p0) {
+      if (widget.bloc.status == ResultStatus.error) ScaffoldMessenger.of(context).showSnackBar(widget.bloc.error.snackBar);
+    });
+    searchController.addListener(() {
+      widget.bloc.filter(searchController.text);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +47,7 @@ class ClinicListFragmentPage extends StatelessWidget {
       padding: DimenApp.marginDefault.all,
       child: Column(
         children: [
-          HeaderSearch(searchController: searchController, username: viewModel.username()),
+          HeaderSearch(searchController: searchController, username: widget.bloc.viewModel.username()),
           Padding(
             padding: EdgeInsets.symmetric(vertical: DimenApp.marginDefault.size),
             child: Text(
@@ -36,19 +61,19 @@ class ClinicListFragmentPage extends StatelessWidget {
                 children: [
                   FilterChipApp(
                     text: 'Data',
-                    selected: bloc.isOrderByDate,
-                    onSelected: (bool value) {},
+                    selected: widget.bloc.isOrderByDate,
+                    onSelected: (bool value) => widget.bloc.orderByDate(value),
                   ),
                   FilterChipApp(
                     text: 'Nome',
-                    selected: bloc.isOrderByName,
-                    onSelected: (bool value) {},
+                    selected: widget.bloc.isOrderByName,
+                    onSelected: (bool value) => widget.bloc.orderByName(value),
                   ),
                   const Spacer(),
                   Pagination(
-                    itemSelected: bloc.currentPage,
-                    itemCount: bloc.pagesCount,
-                    onClick: (index) {},
+                    itemSelected: widget.bloc.page,
+                    itemCount: widget.bloc.pageCount,
+                    onClick: (page) => widget.bloc.loadPage(page),
                   ),
                 ],
               );
@@ -59,13 +84,16 @@ class ClinicListFragmentPage extends StatelessWidget {
             builder: (BuildContext context) {
               return Expanded(
                 child: ListView.separated(
-                  itemBuilder: (_, index) => ClinicCard(),
+                  itemBuilder: (_, index) => ClinicCard(
+                    clinic: widget.bloc.clinics[index],
+                    callback: () => widget.router.details(context: context, clinic: widget.bloc.clinics[index]),
+                  ),
                   separatorBuilder: (_, index) => Container(
                     height: 0.5,
                     width: double.infinity,
                     color: ColorApp.onBackground.color,
                   ),
-                  itemCount: 50,
+                  itemCount: widget.bloc.clinics.length,
                 ),
               );
             },

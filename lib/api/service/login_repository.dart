@@ -1,4 +1,6 @@
 
+import 'package:petsus/api/model/user/user.dart';
+
 abstract class ILoginRepository {
-  Future login(String? email, String? password);
+  Future<User> login(String? email, String? password);
 }
