@@ -40,35 +40,35 @@ mixin _$ClinicListBloc on AbstractClinicListBloc, Store {
     });
   }
 
-  late final _$pagesCountAtom =
-      Atom(name: 'AbstractClinicListBloc.pagesCount', context: context);
+  late final _$pageAtom =
+      Atom(name: 'AbstractClinicListBloc.page', context: context);
 
   @override
-  int get pagesCount {
-    _$pagesCountAtom.reportRead();
-    return super.pagesCount;
+  int get page {
+    _$pageAtom.reportRead();
+    return super.page;
   }
 
   @override
-  set pagesCount(int value) {
-    _$pagesCountAtom.reportWrite(value, super.pagesCount, () {
-      super.pagesCount = value;
+  set page(int value) {
+    _$pageAtom.reportWrite(value, super.page, () {
+      super.page = value;
     });
   }
 
-  late final _$currentPageAtom =
-      Atom(name: 'AbstractClinicListBloc.currentPage', context: context);
+  late final _$pageCountAtom =
+      Atom(name: 'AbstractClinicListBloc.pageCount', context: context);
 
   @override
-  int get currentPage {
-    _$currentPageAtom.reportRead();
-    return super.currentPage;
+  int get pageCount {
+    _$pageCountAtom.reportRead();
+    return super.pageCount;
   }
 
   @override
-  set currentPage(int value) {
-    _$currentPageAtom.reportWrite(value, super.currentPage, () {
-      super.currentPage = value;
+  set pageCount(int value) {
+    _$pageCountAtom.reportWrite(value, super.pageCount, () {
+      super.pageCount = value;
     });
   }
 
@@ -76,62 +76,56 @@ mixin _$ClinicListBloc on AbstractClinicListBloc, Store {
       Atom(name: 'AbstractClinicListBloc.clinics', context: context);
 
   @override
-  List<dynamic> get clinics {
+  ObservableList<Clinics> get clinics {
     _$clinicsAtom.reportRead();
     return super.clinics;
   }
 
   @override
-  set clinics(List<dynamic> value) {
+  set clinics(ObservableList<Clinics> value) {
     _$clinicsAtom.reportWrite(value, super.clinics, () {
       super.clinics = value;
     });
+  }
+
+  late final _$loadPageAsyncAction =
+      AsyncAction('AbstractClinicListBloc.loadPage', context: context);
+
+  @override
+  Future<dynamic> loadPage(int page) {
+    return _$loadPageAsyncAction.run(() => super.loadPage(page));
   }
 
   late final _$orderByNameAsyncAction =
       AsyncAction('AbstractClinicListBloc.orderByName', context: context);
 
   @override
-  Future<dynamic> orderByName() {
-    return _$orderByNameAsyncAction.run(() => super.orderByName());
+  Future<dynamic> orderByName(bool value) {
+    return _$orderByNameAsyncAction.run(() => super.orderByName(value));
   }
 
   late final _$orderByDateAsyncAction =
       AsyncAction('AbstractClinicListBloc.orderByDate', context: context);
 
   @override
-  Future<dynamic> orderByDate() {
-    return _$orderByDateAsyncAction.run(() => super.orderByDate());
+  Future<dynamic> orderByDate(bool value) {
+    return _$orderByDateAsyncAction.run(() => super.orderByDate(value));
   }
 
-  late final _$toPageAsyncAction =
-      AsyncAction('AbstractClinicListBloc.toPage', context: context);
+  late final _$filterAsyncAction =
+      AsyncAction('AbstractClinicListBloc.filter', context: context);
 
   @override
-  Future<dynamic> toPage(int page) {
-    return _$toPageAsyncAction.run(() => super.toPage(page));
-  }
-
-  late final _$AbstractClinicListBlocActionController =
-      ActionController(name: 'AbstractClinicListBloc', context: context);
-
-  @override
-  void search(String query) {
-    final _$actionInfo = _$AbstractClinicListBlocActionController.startAction(
-        name: 'AbstractClinicListBloc.search');
-    try {
-      return super.search(query);
-    } finally {
-      _$AbstractClinicListBlocActionController.endAction(_$actionInfo);
-    }
+  Future<dynamic> filter(String filter) {
+    return _$filterAsyncAction.run(() => super.filter(filter));
   }
 
   @override
   String toString() {
     return '''
 orderBy: ${orderBy},
-pagesCount: ${pagesCount},
-currentPage: ${currentPage},
+page: ${page},
+pageCount: ${pageCount},
 clinics: ${clinics},
 isOrderByName: ${isOrderByName},
 isOrderByDate: ${isOrderByDate}

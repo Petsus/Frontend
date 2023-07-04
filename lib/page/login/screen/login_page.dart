@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
                   ButtonFull(
                     onPressed: () async {
                       final isLogged = await viewModel.login(_emailController.text, _passwordController.text);
-                      if (isLogged) router.home(context);
+                      if (isLogged) await router.home(context);
                     },
                     title: 'Entrar',
                   ),

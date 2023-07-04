@@ -2,9 +2,10 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:petsus/api/model/user/user.dart';
 import 'package:petsus/app/injection.dart';
+import 'package:petsus/base/router/app_router.dart';
 import 'package:petsus/component/menu/menu_app.dart';
 import 'package:petsus/page/home/towerhall/screen/fragment/clinic_list_fragment_page.dart';
-import 'package:petsus/page/home/towerhall/screen/fragment/dashboard_fragment_page.dart';
+import 'package:petsus/page/dashboard/screen/dashboard_fragment_page.dart';
 import 'package:petsus/page/home/towerhall/screen/fragment/statistic_fragment_page.dart';
 import 'package:petsus/page/home/towerhall/screen/fragment/user_fragment_page.dart';
 import 'package:petsus/page/home/towerhall/screen/fragment/veterinary_list_fragment_page.dart';
@@ -13,6 +14,7 @@ import 'package:petsus/page/home/towerhall/viewmodel/town_hall_viewmodel.dart';
 //ignore: must_be_immutable
 class TownHallPage extends StatelessWidget {
   final TownHallViewModel viewModel;
+  final IAppRouter router;
 
   final PageController pageController = PageController();
 
@@ -27,7 +29,11 @@ class TownHallPage extends StatelessWidget {
     SideMenuItem(priority: 4, title: 'Estatísticas', icon: const Icon(Icons.graphic_eq), onTap: callback()),
   ];
 
-  TownHallPage({super.key, required this.viewModel});
+  TownHallPage({
+    super.key,
+    required this.viewModel,
+    required this.router,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +44,21 @@ class TownHallPage extends StatelessWidget {
           if (!snapshot.hasData) return Container();
           return MenuApp(
             itemsMenu: snapshot.requireData,
+            logout: () => router.logout(context: context),
             itemBuilder: (_, index) {
               switch (index) {
-                case 0: return DashboardFragmentPage(bloc: getIt.get(), router: getIt.get());
-                case 1: return VeterinaryListFragmentPage(bloc: getIt.get());
-                case 2: return ClinicListFragmentPage(viewModel: viewModel);
-                case 3: return const UserFragmentPage();
-                case 4: return const StatisticPage();
-                default: return Container();
+                case 0:
+                  return DashboardFragmentPage(bloc: getIt.get(), router: getIt.get());
+                case 1:
+                  return VeterinaryListFragmentPage(bloc: getIt.get(), router: getIt.get());
+                case 2:
+                  return ClinicListFragmentPage(bloc: getIt.get(), router: getIt.get());
+                case 3:
+                  return UserFragmentPage();
+                case 4:
+                  return const StatisticPage();
+                default:
+                  return Container();
               }
             },
             pageController: pageController,

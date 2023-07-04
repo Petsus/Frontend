@@ -25,9 +25,7 @@ class _MenuAppState extends State<MenuApp> {
 
   @override
   void initState() {
-    menuController.addListener((index) {
-      widget.pageController.jumpToPage(index);
-    });
+    menuController.addListener((index) => widget.pageController.jumpToPage(index));
     super.initState();
   }
 
@@ -75,7 +73,8 @@ class _MenuAppState extends State<MenuApp> {
         ),
         Expanded(
           child: PageView.builder(
-            pageSnapping: false,
+            pageSnapping: true,
+            physics: const NeverScrollableScrollPhysics(),
             controller: widget.pageController,
             itemBuilder: widget.itemBuilder,
           ),

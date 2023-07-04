@@ -1,11 +1,11 @@
 
 import 'package:injectable/injectable.dart';
 import 'package:petsus/api/model/news/news.dart';
-import 'package:petsus/page/home/towerhall/viewmodel/dashboard_town_hall_viewmodel.dart';
+import 'package:petsus/page/dashboard/viewmodel/dashboard_viewmodel.dart';
 
 @Environment(Environment.dev)
-@Injectable(as: DashboardTownHallViewModel)
-class DashboardTownHallViewModelDev extends DashboardTownHallViewModel {
+@Injectable(as: DashboardViewModel)
+class DashboardTownHallViewModelDev extends DashboardViewModel {
   @override
   Future<String> username() async => 'Adashino Benio';
 

@@ -1,21 +1,31 @@
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
-import 'package:petsus/page/home/towerhall/viewmodel/town_hall_viewmodel.dart';
+import 'package:petsus/api/model/clinic/clinics.dart';
+import 'package:petsus/base/bloc/base_bloc.dart';
+import 'package:petsus/page/home/towerhall/viewmodel/clinic_list_town_hall_view_model.dart';
 
 part 'clinic_list_bloc.g.dart';
 
+@Injectable(as: AbstractClinicListBloc)
 class ClinicListBloc = AbstractClinicListBloc with _$ClinicListBloc;
 
-abstract class AbstractClinicListBloc with Store {
-  final TownHallViewModel viewModel;
+abstract class AbstractClinicListBloc extends BaseBloc with Store {
+  static const int pageSize = 50;
+
+  final ClinicListTownHallViewModel viewModel;
+  String _filter = '';
 
   @observable
   int orderBy = 0;
+
   @observable
-  int pagesCount = 1;
+  int page = 1;
+
   @observable
-  int currentPage = 1;
+  int pageCount = 1;
+
   @observable
-  List<dynamic> clinics = [];
+  ObservableList<Clinics> clinics = ObservableList.of([]);
 
   AbstractClinicListBloc({
     required this.viewModel,
@@ -27,15 +37,42 @@ abstract class AbstractClinicListBloc with Store {
   @computed
   bool get isOrderByDate => orderBy == 2;
 
-  @action
-  void search(String query) {}
+  @override
+  Future load() async => await loadPage(page);
 
   @action
-  Future orderByName() async {}
+  Future loadPage(int page) async {
+    setStatus(ResultStatus.waiting);
+    try {
+      final response = await viewModel.clinics(page, pageSize, isOrderByDate, isOrderByName, _filter);
+
+      clinics.clear();
+
+      this.page = page;
+      pageCount = response.pageCount;
+      clinics.addAll(response.clinics);
+
+      setStatus(ResultStatus.successful);
+    } catch (e) {
+      setStatus(ResultStatus.error, error: e);
+    }
+  }
 
   @action
-  Future orderByDate() async {}
+  Future orderByName(bool value) async {
+    value ? orderBy |= 1 : orderBy &= ~0x01;
+    await loadPage(1);
+  }
 
   @action
-  Future toPage(int page) async {}
+  Future orderByDate(bool value) async {
+    value ? orderBy |= 2 : orderBy &= ~0x02;
+    await loadPage(1);
+  }
+
+  @action
+  Future filter(String filter) async {
+    _filter = filter;
+    loadPage(1);
+  }
 }

@@ -1,3 +1,4 @@
+
 import 'package:injectable/injectable.dart';
 import 'package:petsus/api/model/veterinary/veterinary.dart';
 import 'package:petsus/api/model/veterinary/veterinary_list.dart';

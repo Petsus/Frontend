@@ -44,13 +44,13 @@ mixin _$VeterinaryListBloc on AbstractVeterinaryListBloc, Store {
       Atom(name: 'AbstractVeterinaryListBloc.veterinaries', context: context);
 
   @override
-  ObservableList<dynamic> get veterinaries {
+  ObservableList<Veterinary> get veterinaries {
     _$veterinariesAtom.reportRead();
     return super.veterinaries;
   }
 
   @override
-  set veterinaries(ObservableList<dynamic> value) {
+  set veterinaries(ObservableList<Veterinary> value) {
     _$veterinariesAtom.reportWrite(value, super.veterinaries, () {
       super.veterinaries = value;
     });

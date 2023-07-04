@@ -34,6 +34,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
+              r'': (bool b) => ({role}) => b ? prefix1.User(role: role) : null,
               r'fromJson': (bool b) =>
                   (map) => b ? prefix1.User.fromJson(map) : null
             },
@@ -42,9 +43,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const <int>[-1],
             null,
             {
-              r'==': 1,
+              r'==': 2,
               r'toString': 0,
-              r'noSuchMethod': 1,
+              r'noSuchMethod': 2,
               r'hashCode': 0,
               r'runtimeType': 0,
               r'toJson': 0,
@@ -68,6 +69,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
       null,
       [
         const [0, 0, null],
+        const [
+          0,
+          0,
+          const [#role]
+        ],
         const [1, 0, null]
       ])
 };

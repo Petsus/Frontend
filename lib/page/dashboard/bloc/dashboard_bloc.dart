@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:petsus/api/model/news/news.dart';
 import 'package:petsus/base/bloc/base_bloc.dart';
-import 'package:petsus/page/home/towerhall/viewmodel/dashboard_town_hall_viewmodel.dart';
+import 'package:petsus/page/dashboard/viewmodel/dashboard_viewmodel.dart';
 
 part 'dashboard_bloc.g.dart';
 
@@ -10,7 +10,7 @@ part 'dashboard_bloc.g.dart';
 class DashboardBloc = AbstractDashboardBloc with _$DashboardBloc;
 
 abstract class AbstractDashboardBloc extends BaseBloc with Store {
-  final DashboardTownHallViewModel viewModel;
+  final DashboardViewModel viewModel;
 
   @observable
   ObservableList<News> _news = ObservableList.of([]);

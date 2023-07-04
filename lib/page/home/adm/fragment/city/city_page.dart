@@ -104,15 +104,15 @@ class CityPage extends StatelessWidget {
                 children: [
                   TextFieldApp(controller: searchController, hintText: 'Pesquisar',),
                   const SizedBox(height: 16),
-                  ListView.separated(
-                    itemCount: 10 + 2,
-                    shrinkWrap: true,
-                    separatorBuilder: (_ , __) => Divider(height: 1, color: ColorApp.onBackground.color.withAlpha(127)),
-                    itemBuilder: (context, index) {
-                      if (index == 0) return const CityHeader();
-                      return CityItem(city: Cities(id: 0, name: 'Sorocaba', state: States(id: 0, name: 'São Paulo', initials: 'SP')));
-                    },
-                  ),
+                  // ListView.separated(
+                  //   itemCount: 10 + 2,
+                  //   shrinkWrap: true,
+                  //   separatorBuilder: (_ , __) => Divider(height: 1, color: ColorApp.onBackground.color.withAlpha(127)),
+                  //   itemBuilder: (context, index) {
+                  //     if (index == 0) return const CityHeader();
+                  //     return CityItem(city: Cities(id: 0, name: 'Sorocaba', state: States(id: 0, name: 'São Paulo', initials: 'SP')));
+                  //   },
+                  // ),
                 ],
               ),
             ),
