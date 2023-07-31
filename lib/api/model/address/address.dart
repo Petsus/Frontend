@@ -43,5 +43,7 @@ class Address extends BaseModel {
   String get formattedAddress => address + ' - $neighborhood' + ', ${city.name}' + ' - ${state.initials}' + (postalCode == null ? '' : ', $postalCode');
 
   @override
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => {
+    "id": id,
+  };
 }
