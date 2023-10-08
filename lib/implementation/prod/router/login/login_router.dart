@@ -8,21 +8,25 @@ import 'package:petsus/page/login/router/login_router.dart';
 import 'package:petsus/repository/shared_preferences.dart';
 import 'package:petsus/util/app_keys.dart';
 
-@Environment(Environment.dev)
 @Injectable(as: ILoginRouter)
-class LoginRouterDev extends ILoginRouter {
+class LoginRouter extends ILoginRouter {
   final SharedPreferences preferences;
 
-  LoginRouterDev({required this.preferences});
+  LoginRouter({required this.preferences});
 
   @override
   Future home(BuildContext context) async {
     final user = await preferences.get<User>(Keys.user.name);
-    if(user != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-        if (user.role.contains(Level.admClinic)) return ClinicPage(viewModel: getIt.get(), router: getIt.get());
-        return TownHallPage(viewModel: getIt.get(), router: getIt.get());
-      }));
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) {
+          if (user.role.contains(Level.admClinic)) {
+            return ClinicPage(viewModel: getIt.get(), router: getIt.get());
+          }
+          return TownHallPage(viewModel: getIt.get(), router: getIt.get());
+        }),
+      );
     }
   }
 

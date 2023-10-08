@@ -1,38 +1,68 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:petsus/api/manager/base_model.dart';
+import 'package:injectable/injectable.dart';
+import 'package:petsus/api/model/auth/auth_token.dart';
+import 'package:petsus/repository/shared_preferences.dart';
+import 'package:petsus/util/app_keys.dart';
 
-bool apiIsInitialized = false;
+const String apiNameLogged = 'apiLogged';
+const String baseUrl = '';
 
-String baseUrl = '';
+@module
+abstract class API {
+  static Dio? _currentBaseDio;
+  static Dio? _currentAppDio;
 
-late Dio _dio;
+  static Future<String?> _token(SharedPreferences preferences) async {
+    final authToken = await preferences.get<AuthToken>(Keys.token.name);
+    return authToken?.bearerToken;
+  }
 
-Dio createDio() => Dio(BaseOptions(
+  @Singleton()
+  Dio base() {
+    final current = _currentBaseDio;
+    if (current != null) return current;
+
+    _currentBaseDio = Dio(BaseOptions(
       baseUrl: baseUrl,
       headers: {},
       validateStatus: (statusCode) => statusCode != null,
     ))._apply((dio) {
-      dio.interceptors.add(
-        InterceptorsWrapper(
-          onError: (error, handler) async {},
-          onResponse: (response, handler) async {
-            handler.next(response);
-          },
-          onRequest: (options, handler) async {
-            handler.next(options);
-          },
-        ),
-      );
-      if (kDebugMode) dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+      if (kDebugMode) {
+        dio.interceptors
+            .add(LogInterceptor(requestBody: true, responseBody: true));
+      }
     });
 
-abstract class API {
-  static Dio get currentDio => _dio;
+    return _currentBaseDio!;
+  }
 
-  static Future loadAPI() async {
-    _dio = createDio();
-    apiIsInitialized = true;
+  @Singleton()
+  @Named(apiNameLogged)
+  Dio app(SharedPreferences preferences) {
+    final current = _currentAppDio;
+    if (current != null) return current;
+
+    _currentAppDio = base()._apply(
+      (dio) {
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (options, handler) async {
+              options.headers.addAll({
+                'Authorization': await _token(preferences),
+              });
+              handler.next(options);
+            },
+            onError: (exception, handler) {
+              if (exception.response?.statusCode == 403) {}
+              handler.next(exception);
+            },
+          ),
+        );
+      },
+    );
+
+    return _currentAppDio!;
   }
 }
 
@@ -40,28 +70,5 @@ extension DioExtends on Dio {
   Dio _apply(Function(Dio) function) {
     function(this);
     return this;
-  }
-}
-
-class ValueResponse<T> {
-  final bool _isSuccessful;
-  final T? _value;
-
-  ValueResponse(this._isSuccessful, this._value);
-
-  T get data => _value!;
-
-  bool get isSuccessful => _isSuccessful;
-}
-
-extension ResponseData on Response<String> {
-  ValueResponse<T> response<T extends BaseModel>() => ValueResponse<T>(isSuccessful, data != null ? toObject(data!) : null);
-
-  ValueResponse<List<T>> responseList<T extends BaseModel>() => ValueResponse<List<T>>(isSuccessful, data != null ? toListObject(data!) : null);
-}
-
-extension StatusCode on Response {
-  bool get isSuccessful {
-    return statusCode != null && (statusCode ?? -1) >= 200 && (statusCode ?? -1) <= 300;
   }
 }

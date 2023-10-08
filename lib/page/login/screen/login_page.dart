@@ -6,7 +6,7 @@ import 'package:petsus/page/login/viewmodel/login_viewmodel.dart';
 
 class LoginPage extends StatelessWidget {
   final ILoginRouter router;
-  final LoginViewModel viewModel;
+  final ILoginViewModel viewModel;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
