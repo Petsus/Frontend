@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:petsus/api/model/auth/auth.dart';
 import 'package:petsus/api/model/auth/auth_token.dart';
-import 'package:petsus/api/model/user/user.dart';
 import 'package:petsus/api/service/login_repository.dart';
 import 'package:petsus/util/result.dart';
 
@@ -14,7 +13,7 @@ class LoginRepositoryDev extends ILoginRepository {
       value: AuthToken(
         token: 'token',
         typeToken: 'typeToken',
-        validateToken: 'validateToken',
+        validateToken: 0,
       ),
     );
   }

@@ -20,7 +20,7 @@ class Veterinary extends BaseModel {
         crm = map['crm'],
         name = map['name'],
         image = map['image'],
-        specialities = map['specialities'],
+        specialities = map['specialities'].map<String>((e) => e as String).toList(),
         super.fromJson();
 
   @override

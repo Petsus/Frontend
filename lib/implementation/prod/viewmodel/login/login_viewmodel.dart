@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:petsus/api/manager/base_model.dart';
 import 'package:petsus/api/model/auth/auth.dart';
 import 'package:petsus/api/model/auth/auth_token.dart';
 import 'package:petsus/api/model/user/user.dart';
@@ -7,6 +8,7 @@ import 'package:petsus/api/service/user_repository.dart';
 import 'package:petsus/page/login/viewmodel/login_viewmodel.dart';
 import 'package:petsus/repository/shared_preferences.dart';
 import 'package:petsus/util/app_keys.dart';
+import 'package:petsus/util/result.dart';
 
 @Injectable(as: ILoginViewModel)
 class LoginViewModel extends ILoginViewModel {
@@ -21,30 +23,31 @@ class LoginViewModel extends ILoginViewModel {
   });
 
   @override
-  Future<bool> login(String? email, String? password) async {
+  Future<Result<bool>> login(String? email, String? password) async {
     final loginAwait = await loginRepository.login(Auth(email: email, password: password));
 
     if (loginAwait.isFail) {
-      notify(loginAwait);
-      return false;
+      return loginAwait.mapError();
     }
 
-    return await _getUser(loginAwait.get);
+    await _save(Keys.token.name, loginAwait.get);
+
+    final userResult = await _getUser();
+    if (userResult.isSuccessful) {
+      return userResult.to((data) => Result.success(value: true));
+    }
+
+    return userResult.mapError();
   }
 
-  Future<bool> _getUser(AuthToken token) async {
+  Future<Result<User>> _getUser() async {
     final result = await userRepository.user();
+    await result.successAsync((data) async => await _save(Keys.user.name, data));
 
-    notify(result);
-    result.success((data) async {
-      await _save(token, data);
-    });
-
-    return result.isSuccessful;
+    return result;
   }
 
-  Future _save(AuthToken token, User user) async {
-    await preferences.saveObject(Keys.user.name, user);
-    await preferences.saveObject(Keys.token.name, token);
+  Future _save(String key, BaseModel value) async {
+    await preferences.saveObject(key, value);
   }
 }

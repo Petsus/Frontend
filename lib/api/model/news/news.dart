@@ -1,5 +1,7 @@
 import 'package:petsus/api/manager/base_model.dart';
+import 'package:petsus/reflection/reflection.dart';
 
+@reflector
 class News extends BaseModel {
   int id;
   String title;
@@ -17,9 +19,9 @@ class News extends BaseModel {
 
   News.fromJson(super.map)
       : id = map['id'],
-        url = map['url'],
+        url = map['content'],
         date = map['date'],
-        title = map['title'],
+        title = map['name'],
         image = map['image'],
         super.fromJson();
 
@@ -28,8 +30,7 @@ class News extends BaseModel {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
 
-    return other is News
-        && id == other.id;
+    return other is News && id == other.id;
   }
 
   @override

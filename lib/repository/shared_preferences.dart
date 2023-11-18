@@ -1,5 +1,3 @@
-
-
 import 'package:petsus/api/manager/base_model.dart';
 
 abstract class SharedPreferences {

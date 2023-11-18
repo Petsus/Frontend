@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:petsus/base/error/string_formatter.dart';
+import 'package:petsus/util/app_global.dart';
 
 part 'base_bloc.g.dart';
 
@@ -25,9 +27,18 @@ abstract class AbstractBaseBloc with Store {
   Future load() async {}
 
   @action
-  void setStatus(ResultStatus status, {dynamic error}) {
+  void setStatus(ResultStatus status, {dynamic error, bool showError = true}) {
     this.status = status;
-    this.error = (error as Error?).messageError;
+    this.error = ErrorStringFormatter(error).messageError;
+
+    if (status == ResultStatus.error && showError) notifyError();
+  }
+
+  void notifyError() {
+    final context = globalNavigatorKey.currentContext;
+    if (context != null) {
+      ScaffoldMessenger.of(context).showSnackBar(error.snackBar);
+    }
   }
 }
 

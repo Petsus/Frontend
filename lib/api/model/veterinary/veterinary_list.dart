@@ -1,6 +1,8 @@
 import 'package:petsus/api/manager/base_model.dart';
 import 'package:petsus/api/model/veterinary/veterinary.dart';
+import 'package:petsus/reflection/reflection.dart';
 
+@reflector
 class VeterinaryList extends BaseModel {
   int page;
   int pageCount;
@@ -15,7 +17,7 @@ class VeterinaryList extends BaseModel {
   VeterinaryList.fromJson(super.map)
       : page = map['page'],
         pageCount = map['pageCount'],
-        veterinaries = (map['veterinaries'] as List<Map<String, dynamic>>).map((e) => Veterinary.fromJson(e)).toList(),
+        veterinaries = map['veterinaries'].map<Veterinary>((e) => Veterinary.fromJson(e as Map<String, dynamic>)).toList(),
         super.fromJson();
 
   @override

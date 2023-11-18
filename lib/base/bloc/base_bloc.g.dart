@@ -72,11 +72,11 @@ mixin _$BaseBloc on AbstractBaseBloc, Store {
   }
 
   @override
-  void setStatus(ResultStatus status, {dynamic error}) {
+  void setStatus(ResultStatus status, {dynamic error, bool showError = true}) {
     final _$actionInfo = _$AbstractBaseBlocActionController.startAction(
         name: 'AbstractBaseBloc.setStatus');
     try {
-      return super.setStatus(status, error: error);
+      return super.setStatus(status, error: error, showError: showError);
     } finally {
       _$AbstractBaseBlocActionController.endAction(_$actionInfo);
     }

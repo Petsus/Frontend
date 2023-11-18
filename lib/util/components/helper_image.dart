@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 ImageLoadingBuilder loading() => (BuildContext context, Widget child, ImageChunkEvent? progress) {
       if (progress == null) return child;
-      return const SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+      return const Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
       );
     };
 

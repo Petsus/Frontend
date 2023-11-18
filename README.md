@@ -17,3 +17,5 @@ samples, guidance on mobile development, and a full API reference.
 
 
 //flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0 --web-renderer html -t lib/app/main.dart
+//flutter pub run build_runner build --delete-conflicting-outputs
+// generate import file for reflectable => util/models_import_generator.dart

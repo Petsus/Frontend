@@ -1,9 +1,10 @@
 
 import 'package:petsus/api/model/news/news.dart';
 import 'package:petsus/base/viewmodel/base_viewmodel.dart';
+import 'package:petsus/util/result.dart';
 
-abstract class DashboardViewModel extends BaseViewModel {
+abstract class IDashboardViewModel extends BaseViewModel {
   Future<String> username();
-  Future<List<News>> news();
-  Future<List<News>> schedule();
+  Future<Result<List<News>>> news();
+  Future<Result<List<News>>> schedule();
 }

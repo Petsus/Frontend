@@ -12,7 +12,7 @@ class ClinicListBloc = AbstractClinicListBloc with _$ClinicListBloc;
 abstract class AbstractClinicListBloc extends BaseBloc with Store {
   static const int pageSize = 50;
 
-  final ClinicListTownHallViewModel viewModel;
+  final IClinicListTownHallViewModel viewModel;
   String _filter = '';
 
   @observable
@@ -43,19 +43,20 @@ abstract class AbstractClinicListBloc extends BaseBloc with Store {
   @action
   Future loadPage(int page) async {
     setStatus(ResultStatus.waiting);
-    try {
-      final response = await viewModel.clinics(page, pageSize, isOrderByDate, isOrderByName, _filter);
 
+    final response = await viewModel.clinics(page, pageSize, isOrderByDate, isOrderByName, _filter);
+    response.success((data) {
       clinics.clear();
 
       this.page = page;
-      pageCount = response.pageCount;
-      clinics.addAll(response.clinics);
+      pageCount = data.pageCount;
+      clinics.addAll(data.clinics);
 
       setStatus(ResultStatus.successful);
-    } catch (e) {
+    });
+    response.fail((e) {
       setStatus(ResultStatus.error, error: e);
-    }
+    });
   }
 
   @action

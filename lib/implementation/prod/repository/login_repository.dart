@@ -1,9 +1,7 @@
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:petsus/api/manager/api.dart';
 import 'package:petsus/api/manager/api_url.dart';
-import 'package:petsus/api/manager/extensions/response.dart';
+import 'package:petsus/api/manager/base/data_response.dart';
 import 'package:petsus/api/model/auth/auth.dart';
 import 'package:petsus/api/model/auth/auth_token.dart';
 import 'package:petsus/api/service/login_repository.dart';
@@ -20,7 +18,7 @@ class LoginRepository extends ILoginRepository {
   Future<Result<AuthToken>> login(Auth auth) async {
     return await runCatchingAsync(() async {
       final response = await api.post<String>(ApiUrl.auth().path, data: auth.toJson());
-      return response.response<AuthToken>().data;
+      return response.make<AuthToken>().data;
     });
   }
 }

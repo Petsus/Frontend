@@ -4,17 +4,18 @@ import 'package:petsus/api/model/veterinary/veterinary.dart';
 import 'package:petsus/api/model/veterinary/veterinary_list.dart';
 import 'package:petsus/implementation/dev/util/list_images.dart';
 import 'package:petsus/page/home/towerhall/viewmodel/veterinary_town_hall_viewmodel.dart';
+import 'package:petsus/util/result.dart';
 
 @Environment(Environment.dev)
-@Injectable(as: VeterinaryTownHallViewModel)
-class VeterinaryTownHallViewModelDev extends VeterinaryTownHallViewModel {
+@Injectable(as: IVeterinaryTownHallViewModel)
+class VeterinaryTownHallViewModelDev extends IVeterinaryTownHallViewModel {
   @override
   Future<String> username() async => 'Adashino Benio';
 
   @override
-  Future<VeterinaryList> veterinary(int page, int pageSize, bool orderByName, bool orderByDate, String filter) async {
+  Future<Result<VeterinaryList>> veterinary(int page, int pageSize, bool orderByName, bool orderByDate, String filter) async {
     if (page == 7) throw UnimplementedError();
-    return VeterinaryList(
+    return Result.success(value: VeterinaryList(
       page: page,
       pageCount: 13,
       veterinaries: List.generate(pageSize, (index) {
@@ -26,6 +27,6 @@ class VeterinaryTownHallViewModelDev extends VeterinaryTownHallViewModel {
           specialities: ['Cats', 'Dogs'],
         );
       }).where((element) => element.name.contains(filter) || element.crm.contains(filter)).toList(),
-    );
+    ));
   }
 }

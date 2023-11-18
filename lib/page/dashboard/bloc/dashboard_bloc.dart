@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:petsus/api/model/news/news.dart';
 import 'package:petsus/base/bloc/base_bloc.dart';
 import 'package:petsus/page/dashboard/viewmodel/dashboard_viewmodel.dart';
+import 'package:petsus/util/result.dart';
 
 part 'dashboard_bloc.g.dart';
 
@@ -10,7 +11,7 @@ part 'dashboard_bloc.g.dart';
 class DashboardBloc = AbstractDashboardBloc with _$DashboardBloc;
 
 abstract class AbstractDashboardBloc extends BaseBloc with Store {
-  final DashboardViewModel viewModel;
+  final IDashboardViewModel viewModel;
 
   @observable
   ObservableList<News> _news = ObservableList.of([]);
@@ -37,14 +38,19 @@ abstract class AbstractDashboardBloc extends BaseBloc with Store {
 
   @override
   Future load() async {
-    try {
-      setStatus(ResultStatus.waiting);
-      _news = ObservableList.of(await viewModel.news());
-      _schedules = ObservableList.of(await viewModel.schedule());
-      setStatus(ResultStatus.successful);
-    } catch (e) {
-      setStatus(ResultStatus.error, error: e);
-    }
+    setStatus(ResultStatus.waiting);
+
+    final news = await viewModel.news();
+    news.success((data) => _news = ObservableList.of(news.get));
+
+    final schedule = await viewModel.schedule();
+    schedule.success((data) => _schedules = ObservableList.of(schedule.get));
+
+    Result.multipleResultIsSuccessful(
+      [news, schedule],
+      () => setStatus(ResultStatus.successful),
+      (error) => setStatus(ResultStatus.error, error: error),
+    );
   }
 
   @action

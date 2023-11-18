@@ -1,5 +1,9 @@
 
+typedef VoidCallback = void Function();
+
+typedef Callback<T, M> = M Function(T data);
 typedef SuccessCallback<T> = void Function(T data);
+typedef SuccessCallbackFuture<T> = Future Function(T data);
 typedef FailCallback = void Function(dynamic error);
 
 class Result<T> {
@@ -26,10 +30,24 @@ class Result<T> {
     return data!;
   }
 
+  Result<M> mapError<M>() {
+    return Result.error(error: error);
+  }
+
+  M to<M>(Callback<Result<T>, M> callback) {
+    return callback.call(this);
+  }
+
   void success(SuccessCallback<T> callback) {
       if (error == null) {
         callback.call(data as T);
       }
+  }
+
+  Future successAsync(SuccessCallbackFuture<T> callback) async {
+    if (error == null) {
+      await callback.call(data as T);
+    }
   }
 
   void fail(FailCallback callback) {
@@ -41,6 +59,16 @@ class Result<T> {
   void take(SuccessCallback<T> callback, FailCallback failCallback) {
     success(callback);
     fail(failCallback);
+  }
+
+  static void multipleResultIsSuccessful(List<Result> results, VoidCallback success, FailCallback failCallback) {
+    for (var result in results) {
+       if (result.isFail) {
+         failCallback(result.error);
+         return;
+       }
+    }
+    success();
   }
 }
 
@@ -61,6 +89,7 @@ Future<Result<T>> runCatchingAsync<T>(RunCatchingCallbackAsync<T> catchingCallba
     final value = await catchingCallback.call();
     return Result.success(value: value);
   } catch (e) {
+    print(e);
     return Result.error(error: e);
   }
 }

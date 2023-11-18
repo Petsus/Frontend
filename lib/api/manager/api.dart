@@ -6,7 +6,7 @@ import 'package:petsus/repository/shared_preferences.dart';
 import 'package:petsus/util/app_keys.dart';
 
 const String apiNameLogged = 'apiLogged';
-const String baseUrl = '';
+const String baseUrl = 'http://localhost:8080';
 
 @module
 abstract class API {

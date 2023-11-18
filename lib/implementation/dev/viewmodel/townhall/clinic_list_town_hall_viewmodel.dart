@@ -6,17 +6,18 @@ import 'package:petsus/api/model/clinic/clinic_list.dart';
 import 'package:petsus/api/model/clinic/clinics.dart';
 import 'package:petsus/implementation/dev/util/list_images.dart';
 import 'package:petsus/page/home/towerhall/viewmodel/clinic_list_town_hall_view_model.dart';
+import 'package:petsus/util/result.dart';
 
 @Environment(Environment.dev)
-@Injectable(as: ClinicListTownHallViewModel)
-class ClinicListTownHallViewModelDev extends ClinicListTownHallViewModel {
+@Injectable(as: IClinicListTownHallViewModel)
+class ClinicListTownHallViewModelDev extends IClinicListTownHallViewModel {
   @override
   Future<String> username() async => 'Adashino Benio';
 
   @override
-  Future<ClinicList> clinics(int page, int pageSize, bool orderByName, bool orderByDate, String filter) async {
+  Future<Result<ClinicList>> clinics(int page, int pageSize, bool orderByName, bool orderByDate, String filter) async {
     if (page == 7) throw UnimplementedError();
-    return ClinicList(
+    return Result.success(value: ClinicList(
       page: page,
       pageCount: 13,
       clinics: List.generate(pageSize, (index) {
@@ -36,7 +37,6 @@ class ClinicListTownHallViewModelDev extends ClinicListTownHallViewModel {
             city: Cities(
               id: index + (pageSize * 2),
               name: 'Sorocaba',
-              stateId: index + (pageSize * 3),
             ),
             state: States(
               id: index + (pageSize * 3),
@@ -52,10 +52,10 @@ class ClinicListTownHallViewModelDev extends ClinicListTownHallViewModel {
       })
           .where(
             (element) => element.name.contains(filter)
-                || element.cnpj?.contains(filter) == true
-                || element.cpf?.contains(filter) == true,
-          )
+            || element.cnpj?.contains(filter) == true
+            || element.cpf?.contains(filter) == true,
+      )
           .toList(),
-    );
+    ));
   }
 }

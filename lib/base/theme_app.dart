@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:petsus/app/injection.dart';
+import 'package:petsus/injection/injection.dart';
 import 'package:petsus/page/login/screen/login_page.dart';
 import 'package:petsus/page/tcc/tcc_page.dart';
+import 'package:petsus/util/app_global.dart';
 import 'package:petsus/util/resources/app_color.dart';
 
 class ThemeApp extends StatelessWidget {
@@ -14,6 +15,7 @@ class ThemeApp extends StatelessWidget {
       routes: {
         '/tcc': (context) => const TccPage(),
       },
+      navigatorKey: globalNavigatorKey,
       debugShowCheckedModeBanner: false,
       theme: _themeData(),
       darkTheme: _themeData(),
@@ -23,14 +25,14 @@ class ThemeApp extends StatelessWidget {
         PointerDeviceKind.trackpad,
       }),
       home: LoginPage(
-        router: getIt.get(),
-        viewModel: getIt.get(),
+        bloc: getIt.get(),
       ),
     );
   }
 
   ThemeData _themeData() {
     return ThemeData(
+      disabledColor: ColorApp.onBackground.color,
       scrollbarTheme: ScrollbarThemeData(
         thumbColor: MaterialStateProperty.all(ColorApp.tertiary.color.withOpacity(0.4)),
       ),

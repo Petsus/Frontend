@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
-import 'package:petsus/base/bloc/base_bloc.dart';
-import 'package:petsus/base/error/string_formatter.dart';
 import 'package:petsus/component/button/pagination.dart';
 import 'package:petsus/component/chip/filter_chip.dart';
 import 'package:petsus/component/header/header_search.dart';
@@ -32,9 +29,6 @@ class _ClinicListFragmentPageState extends State<ClinicListFragmentPage> {
   @override
   void initState() {
     widget.bloc.load();
-    autorun((p0) {
-      if (widget.bloc.status == ResultStatus.error) ScaffoldMessenger.of(context).showSnackBar(widget.bloc.error.snackBar);
-    });
     searchController.addListener(() {
       widget.bloc.filter(searchController.text);
     });

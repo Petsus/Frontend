@@ -1,9 +1,9 @@
 import 'package:petsus/api/manager/base_model.dart';
-import 'package:petsus/app/injection.dart';
+import 'package:petsus/reflection/reflection.dart';
 
 @reflector
 class AuthToken extends BaseModel {
-  final String validateToken;
+  final int validateToken;
   final String typeToken;
   final String token;
 
@@ -15,8 +15,8 @@ class AuthToken extends BaseModel {
 
   AuthToken.fromJson(super.map)
       : token = map['token'],
-        typeToken = map['token'],
-        validateToken = map['validateToken'],
+        typeToken = map['type'],
+        validateToken = map['dateExpiration'],
         super.fromJson();
 
   String get bearerToken {
@@ -24,5 +24,9 @@ class AuthToken extends BaseModel {
   }
 
   @override
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => {
+    'token': token,
+    'type': typeToken,
+    'dateExpiration': validateToken,
+  };
 }

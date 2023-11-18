@@ -1,8 +1,5 @@
-
 import 'package:petsus/api/manager/base_model.dart';
-import 'package:petsus/app/injection.dart';
-
-enum Level { adm, user, admClinic, userClinic, admTownHall, veterinary }
+import 'package:petsus/reflection/reflection.dart';
 
 @reflector
 class Auth extends BaseModel {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:petsus/api/model/user/user.dart';
-import 'package:petsus/app/injection.dart';
+import 'package:petsus/injection/injection.dart';
 import 'package:petsus/page/home/clinic/screen/clinic_page.dart';
 import 'package:petsus/page/home/towerhall/screen/town_hall_page.dart';
 import 'package:petsus/page/login/router/login_router.dart';
@@ -21,8 +21,8 @@ class LoginRouter extends ILoginRouter {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) {
-          if (user.role.contains(Level.admClinic)) {
-            return ClinicPage(viewModel: getIt.get(), router: getIt.get());
+          if (user.role.contains(Level.clinic)) {
+            return ClinicPage(bloc: getIt.get());
           }
           return TownHallPage(viewModel: getIt.get(), router: getIt.get());
         }),

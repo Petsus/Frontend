@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:petsus/api/model/news/news.dart';
-import 'package:petsus/app/injection.dart';
 import 'package:petsus/component/sheet/side_sheet.dart';
+import 'package:petsus/injection/injection.dart';
 import 'package:petsus/page/dashboard/router/dashboard_router.dart';
 import 'package:petsus/page/news/screen/news_page.dart';
 
