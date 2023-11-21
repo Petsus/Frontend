@@ -10,10 +10,13 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'Container Registry Frontend'
+  dockerRegistryServiceConnection: 'a6927726-c2ee-47b8-9fe0-3ab894caf80d'
   imageRepository: 'frontend'
+  containerRegistry: 'fronted.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
+
+  # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
 stages:
@@ -57,8 +60,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-#    - task: AzureWebAppContainer@1
-#      inputs:
-#        azureSubscription: 'Azure subscription 1 (965150e6-fb45-4c50-9947-6d4b23bd3177)'
-#        appName: 'petsus-frontend-dev'
-#        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Subscription(965150e6-fb45-4c50-9947-6d4b23bd3177)'
+        appName: 'petsus-frontend'
+        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
