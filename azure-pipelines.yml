@@ -10,9 +10,9 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'a6927726-c2ee-47b8-9fe0-3ab894caf80d'
+  dockerRegistryServiceConnection: 'Container Registry Frontend'
   imageRepository: 'frontend'
-  containerRegistry: 'fronted.azurecr.io'
+  containerRegistry: 'petsus-frontend.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
@@ -30,27 +30,6 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-#    - task: PowerShell@2
-#      displayName: Creating archive .env in $(Build.ArtifactStagingDirectory)
-#      inputs:
-#        targetType: inline
-#        script:  Copy-Item '$(Build.SourcesDirectory)/assets/.env.example' -Destination '$(Build.SourcesDirectory)/assets/.env'
-#    - task: replacetokens@5
-#      displayName: Replacing tokens
-#      inputs:
-#        targetFiles: '**/.env'
-#        encoding: 'auto'
-#        tokenPattern: 'custom'
-#        tokenPrefix: '#{'
-#        tokenSuffix: '}#'
-#        writeBOM: true
-#        actionOnMissing: 'warn'
-#        keepToken: false
-#        actionOnNoFiles: 'continue'
-#        enableTransforms: false
-#        enableRecursion: false
-#        useLegacyPattern: false
-#        enableTelemetry: true
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
