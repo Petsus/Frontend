@@ -65,3 +65,4 @@ stages:
         azureSubscription: 'Subscription(965150e6-fb45-4c50-9947-6d4b23bd3177)'
         appName: 'petsus-frontend'
         containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+        
