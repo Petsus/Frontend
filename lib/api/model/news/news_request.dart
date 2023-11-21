@@ -13,8 +13,8 @@ class NewsRequest extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => {
-        'content': title,
+        'title': title,
         'date': date,
-        'url': url,
+        'content': url,
       };
 }

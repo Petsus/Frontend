@@ -12,7 +12,7 @@ class VeterinaryListBloc = AbstractVeterinaryListBloc with _$VeterinaryListBloc;
 abstract class AbstractVeterinaryListBloc extends BaseBloc with Store {
   static const int pageSize = 50;
 
-  final VeterinaryTownHallViewModel viewModel;
+  final IVeterinaryTownHallViewModel viewModel;
   String _filter = '';
 
   @observable
@@ -43,19 +43,17 @@ abstract class AbstractVeterinaryListBloc extends BaseBloc with Store {
   @action
   Future loadPage(int page) async {
     setStatus(ResultStatus.waiting);
-    try {
-      final response = await viewModel.veterinary(page, pageSize, isOrderByDate, isOrderByName, _filter);
-
+    final response = await viewModel.veterinary(page, pageSize, isOrderByDate, isOrderByName, _filter);
+    response.success((data) {
       veterinaries.clear();
 
       this.page = page;
-      pageCount = response.pageCount;
-      veterinaries.addAll(response.veterinaries);
-
-      setStatus(ResultStatus.successful);
-    } catch (e) {
+      pageCount = data.pageCount;
+      veterinaries.addAll(data.veterinaries);
+    });
+    response.fail((e) {
       setStatus(ResultStatus.error, error: e);
-    }
+    });
   }
 
   @action

@@ -1,7 +1,8 @@
-
 import 'package:petsus/api/manager/base_model.dart';
 import 'package:petsus/api/model/clinic/clinics.dart';
+import 'package:petsus/reflection/reflection.dart';
 
+@reflector
 class ClinicList extends BaseModel {
   int page;
   int pageCount;
@@ -16,7 +17,7 @@ class ClinicList extends BaseModel {
   ClinicList.fromJson(super.map)
       : page = map['page'],
         pageCount = map['pageCount'],
-        clinics = (map['clinics'] as List<Map<String, dynamic>>).map((e) => Clinics.fromJson(e)).toList(),
+        clinics = map['clinics'].map<Clinics>((e) => Clinics.fromJson(e as Map<String, dynamic>)).toList(),
         super.fromJson();
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petsus/api/model/veterinary/veterinary.dart';
 import 'package:petsus/component/card/card_info.dart';
+import 'package:petsus/util/components/helper_image.dart';
 import 'package:petsus/util/resources/app_color.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
 
@@ -39,6 +40,8 @@ class VeterinaryDetails extends StatelessWidget {
                   child: Image.network(
                     veterinary.image,
                     fit: BoxFit.cover,
+                    loadingBuilder: loading(),
+                    errorBuilder: error(),
                   ),
                 ),
               ),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:petsus/api/model/news/news.dart';
-import 'package:petsus/base/bloc/base_bloc.dart';
-import 'package:petsus/base/error/string_formatter.dart';
 import 'package:petsus/component/header/header_search.dart';
 import 'package:petsus/page/dashboard/bloc/dashboard_bloc.dart';
 import 'package:petsus/page/dashboard/router/dashboard_router.dart';
@@ -15,7 +12,11 @@ class DashboardFragmentPage extends StatefulWidget {
   final AbstractDashboardBloc bloc;
   final IDashboardRouter router;
 
-  const DashboardFragmentPage({super.key, required this.bloc, required this.router});
+  const DashboardFragmentPage({
+    super.key,
+    required this.bloc,
+    required this.router,
+  });
 
   @override
   State<DashboardFragmentPage> createState() => _DashboardFragmentPageState();
@@ -29,9 +30,6 @@ class _DashboardFragmentPageState extends State<DashboardFragmentPage> {
     widget.bloc.load();
     searchController.addListener(() {
       widget.bloc.filter(searchController.text);
-    });
-    autorun((_) {
-      if (widget.bloc.status == ResultStatus.error) ScaffoldMessenger.of(context).showSnackBar(widget.bloc.error.snackBar);
     });
     super.initState();
   }

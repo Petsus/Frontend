@@ -1,9 +1,9 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:petsus/api/model/user/user.dart';
-import 'package:petsus/app/injection.dart';
 import 'package:petsus/base/router/app_router.dart';
 import 'package:petsus/component/menu/menu_app.dart';
+import 'package:petsus/injection/injection.dart';
 import 'package:petsus/page/home/towerhall/screen/fragment/clinic_list_fragment_page.dart';
 import 'package:petsus/page/dashboard/screen/dashboard_fragment_page.dart';
 import 'package:petsus/page/home/towerhall/screen/fragment/statistic_fragment_page.dart';
@@ -13,7 +13,7 @@ import 'package:petsus/page/home/towerhall/viewmodel/town_hall_viewmodel.dart';
 
 //ignore: must_be_immutable
 class TownHallPage extends StatelessWidget {
-  final TownHallViewModel viewModel;
+  final ITownHallViewModel viewModel;
   final IAppRouter router;
 
   final PageController pageController = PageController();
@@ -70,8 +70,9 @@ class TownHallPage extends StatelessWidget {
 
   Future<List<SideMenuItem>> loadOptions() async {
     final levels = await viewModel.levels();
-    if (!levels.contains(Level.admTownHall)) return baseOptions;
-    return baseOptions + admOptions;
+    if (!levels.contains(Level.townhall)) return baseOptions;
+    // return baseOptions + admOptions;
+    return baseOptions;
   }
 
   void Function(int, SideMenuController) callback() => (int index, SideMenuController controller) => controller.changePage(index);

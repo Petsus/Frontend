@@ -1,3 +1,4 @@
 enum Keys {
   user,
+  token
 }

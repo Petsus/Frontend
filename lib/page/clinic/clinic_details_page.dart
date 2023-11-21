@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:petsus/api/model/clinic/clinics.dart';
 import 'package:petsus/component/card/card_info.dart';
+import 'package:petsus/util/components/helper_image.dart';
 import 'package:petsus/util/resources/app_color.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
 
@@ -40,6 +41,8 @@ class ClinicDetailsPage extends StatelessWidget {
                   child: Image.network(
                     clinic.image,
                     fit: BoxFit.cover,
+                    loadingBuilder: loading(),
+                    errorBuilder: error(),
                   ),
                 ),
               ),

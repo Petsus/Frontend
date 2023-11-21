@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petsus/api/model/clinic/clinics.dart';
+import 'package:petsus/util/components/helper_image.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
 
 class ClinicCard extends StatelessWidget {
@@ -28,6 +29,8 @@ class ClinicCard extends StatelessWidget {
                 child: Image.network(
                   clinic.image,
                   fit: BoxFit.cover,
+                  loadingBuilder: loading(),
+                  errorBuilder: error(),
                 ),
               ),
             ),

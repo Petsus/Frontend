@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class StringFormatter {
   final String? messageString;
-  final Error? error;
+  final dynamic? error;
 
   StringFormatter({required this.messageString, required this.error});
 
@@ -11,7 +11,7 @@ class StringFormatter {
         error = null;
 }
 
-extension ErrorStringFormatter on Error? {
+extension ErrorStringFormatter on dynamic {
   StringFormatter get messageError => StringFormatter(messageString: null, error: this);
 }
 

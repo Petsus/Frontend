@@ -13,7 +13,7 @@ import 'package:petsus/util/date_formatter.dart';
 import 'package:petsus/util/resources/app_color.dart';
 import 'package:petsus/util/resources/dimen_app.dart';
 
-class NewsPage extends StatefulWidget {
+class NewsPage extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController urlController;
   final TextEditingController dateController;
@@ -26,151 +26,150 @@ class NewsPage extends StatefulWidget {
         dateController = TextEditingController(text: edit?.date?.parseTime() ?? '');
 
   @override
-  State<NewsPage> createState() => _NewsPageState();
-}
-
-class _NewsPageState extends State<NewsPage> {
-  @override
-  void initState() {
-    autorun((_) {
-      if (widget.bloc.status == ResultStatus.error) ScaffoldMessenger.of(context).showSnackBar(widget.bloc.error.snackBar);
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: DimenApp.marginDefault.all,
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(Icons.close, color: ColorApp.onBackground.color),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: InkWell(
-                      onTap: () async {
-                        final img = await ImagePicker().pickImage(source: ImageSource.gallery);
-                        if (img != null) widget.bloc.updateImage(img);
-                      },
-                      child: FractionallySizedBox(
-                        widthFactor: 0.4,
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: Observer(
-                            builder: (_) {
-                              if (widget.edit == null && widget.bloc.imageSelected == null) {
-                                return Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: ColorApp.primary.color, width: 2.0),
-                                    borderRadius: DimenApp.borderRadius.radius,
-                                  ),
-                                  child: Icon(Icons.image_search, size: 75, color: ColorApp.onBackground.color),
-                                );
-                              }
-                              final url = widget.bloc.imageSelected?.path ?? widget.edit?.image;
-                              return Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: ColorApp.primary.color, width: 2.0),
-                                  borderRadius: DimenApp.borderRadius.radius,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(DimenApp.borderRadius.size),
-                                  child: Image.network(
-                                    url ?? '',
-                                    width: double.infinity,
-                                    loadingBuilder: loading(),
-                                    errorBuilder: error(),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
+      body: FutureBuilder(
+        future: bloc.canEdit(),
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding: DimenApp.marginDefault.all,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          icon: Icon(Icons.close, color: ColorApp.onBackground.color),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () async {
+                            if (snapshot.data != true) return;
+                            final img = await ImagePicker().pickImage(source: ImageSource.gallery);
+                            if (img != null) bloc.updateImage(img);
+                          },
+                          child: FractionallySizedBox(
+                            widthFactor: 0.4,
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Observer(
+                                builder: (_) {
+                                  if (edit == null && bloc.imageSelected == null) {
+                                    return Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: ColorApp.primary.color, width: 2.0),
+                                        borderRadius: DimenApp.borderRadius.radius,
+                                      ),
+                                      child: Icon(Icons.image_search, size: 75, color: ColorApp.onBackground.color),
+                                    );
+                                  }
+                                  final url = bloc.imageSelected?.path ?? edit?.image;
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: ColorApp.primary.color, width: 2.0),
+                                      borderRadius: DimenApp.borderRadius.radius,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(DimenApp.borderRadius.size),
+                                      child: Image.network(
+                                        url ?? '',
+                                        width: double.infinity,
+                                        loadingBuilder: loading(),
+                                        errorBuilder: error(),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: DimenApp.marginDefault.size),
-                  TextField(
-                    controller: widget.titleController,
-                    decoration: const InputDecoration(labelText: 'Nome', hintText: 'Nome'),
-                  ),
-                  SizedBox(height: DimenApp.marginSmall.size),
-                  TextField(
-                    controller: widget.urlController,
-                    decoration: const InputDecoration(labelText: 'URL', hintText: 'URL'),
-                  ),
-                  SizedBox(height: DimenApp.marginSmall.size),
-                  TextField(
-                    controller: widget.dateController,
-                    onTap: () async {
-                      final dateSelected = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.utc(2099));
-                      if (dateSelected != null) {
-                        widget.bloc.timeSelected = dateSelected;
-                        widget.dateController.value = widget.dateController.value.copyWith(text: dateSelected.parseFormatted());
-                      }
-                    },
-                    decoration: const InputDecoration(labelText: 'Data do evento', hintText: 'Data do evento'),
-                  ),
-                  SizedBox(height: DimenApp.marginDefault.size),
-                  ButtonFull(
-                    title: 'Salvar',
-                    onPressed: () => save(context),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Observer(
-            builder: (_) {
-              return Visibility(
-                visible: widget.bloc.status == ResultStatus.waiting,
-                child: Container(
-                  color: ColorApp.background.color.withOpacity(0.8),
-                  child: Center(
-                    child: CircularProgressIndicator(color: ColorApp.tertiary.color),
+                      SizedBox(height: DimenApp.marginDefault.size),
+                      TextField(
+                        enabled: snapshot.data == true,
+                        controller: titleController,
+                        decoration: const InputDecoration(labelText: 'Nome', hintText: 'Nome'),
+                      ),
+                      SizedBox(height: DimenApp.marginSmall.size),
+                      TextField(
+                        enabled: snapshot.data == true,
+                        controller: urlController,
+                        decoration: const InputDecoration(labelText: 'URL', hintText: 'URL'),
+                      ),
+                      SizedBox(height: DimenApp.marginSmall.size),
+                      TextField(
+                        enabled: snapshot.data == true,
+                        controller: dateController,
+                        onTap: () async {
+                          final dateSelected = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.utc(2099));
+                          if (dateSelected != null) {
+                            bloc.timeSelected = dateSelected;
+                            dateController.value = dateController.value.copyWith(text: dateSelected.parseFormatted());
+                          }
+                        },
+                        decoration: const InputDecoration(labelText: 'Data do evento', hintText: 'Data do evento'),
+                      ),
+                      SizedBox(height: DimenApp.marginDefault.size),
+                      Visibility(
+                        visible: snapshot.data == true,
+                        child: ButtonFull(
+                          title: 'Salvar',
+                          onPressed: () => save(context),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+              Observer(
+                builder: (_) {
+                  return Visibility(
+                    visible: bloc.status == ResultStatus.waiting,
+                    child: Container(
+                      color: ColorApp.background.color.withOpacity(0.8),
+                      child: Center(
+                        child: CircularProgressIndicator(color: ColorApp.tertiary.color),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
   void save(BuildContext context) async {
-    widget.bloc.setStatus(ResultStatus.waiting);
+    bloc.setStatus(ResultStatus.waiting);
 
     final request = NewsRequest(
-      title: widget.titleController.text,
-      date: widget.bloc.timeSelected?.formatted,
-      url: widget.urlController.text.isEmpty ? null : widget.urlController.text,
+      title: titleController.text,
+      date: bloc.timeSelected?.formatted,
+      url: urlController.text.isEmpty ? null : urlController.text,
     );
 
-    if (widget.edit != null) {
-      final updateNews = await widget.bloc.viewModel.update(request, widget.edit!.id, widget.bloc.imageSelected);
-      if (updateNews != null) Navigator.pop(context, updateNews);
+    if (edit != null) {
+      final updateNews = await bloc.viewModel.update(request, edit!.id, bloc.imageSelected);
+      Navigator.pop(context, updateNews.data);
       return;
     }
 
-    if (widget.bloc.imageSelected == null) {
-      widget.bloc.setError(StringFormatter(messageString: 'Selecione uma imagem', error: null));
+    if (bloc.imageSelected == null) {
+      bloc.setError(StringFormatter(messageString: 'Selecione uma imagem', error: null));
       return;
     }
 
-    final createdNews = await widget.bloc.viewModel.save(request, widget.bloc.imageSelected!);
-    if (createdNews != null) Navigator.pop(context, createdNews);
+    final createdNews = await bloc.viewModel.save(request, bloc.imageSelected!);
+    Navigator.pop(context, createdNews.data);
   }
 }

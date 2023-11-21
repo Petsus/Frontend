@@ -33,7 +33,7 @@ class Address extends BaseModel {
         lng = map['lng'],
         number = map['number'],
         city = Cities.fromJson(map['city']),
-        state = States.fromJson(map['state']),
+        state = States.fromJson(map['city']['state']),
         address = map['address'],
         complement = map['complement'],
         postalCode = map['postalCode'],
@@ -44,6 +44,6 @@ class Address extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => {
-    "id": id,
-  };
+        "id": id,
+      };
 }

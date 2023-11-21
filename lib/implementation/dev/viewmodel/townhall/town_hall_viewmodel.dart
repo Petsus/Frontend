@@ -3,12 +3,12 @@ import 'package:petsus/api/model/user/user.dart';
 import 'package:petsus/page/home/towerhall/viewmodel/town_hall_viewmodel.dart';
 
 @Environment(Environment.dev)
-@Injectable(as: TownHallViewModel)
-class TownHallViewModelDev extends TownHallViewModel {
+@Injectable(as: ITownHallViewModel)
+class TownHallViewModelDev extends ITownHallViewModel {
   @override
   Future<List<Level>> levels() async {
     return [
-      Level.admTownHall,
+      Level.adm,
     ];
   }
 

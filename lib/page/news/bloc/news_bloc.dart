@@ -10,7 +10,7 @@ part 'news_bloc.g.dart';
 class NewsBloc = AbstractNewsBloc with _$NewsBloc;
 
 abstract class AbstractNewsBloc extends BaseBloc with Store {
-  final NewsViewModel viewModel;
+  final INewsViewModel viewModel;
 
   @observable
   XFile? imageSelected;
@@ -23,4 +23,8 @@ abstract class AbstractNewsBloc extends BaseBloc with Store {
   void updateImage(XFile image) => imageSelected = image;
 
   void updateDate(DateTime time) => timeSelected = time;
+
+  Future<bool> canEdit() async {
+    return await viewModel.canEdit();
+  }
 }
