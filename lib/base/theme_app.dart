@@ -14,6 +14,7 @@ class ThemeApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/tcc': (context) => const TccPage(),
+        '/about': (context) => const TccPage(),
       },
       navigatorKey: globalNavigatorKey,
       debugShowCheckedModeBanner: false,
