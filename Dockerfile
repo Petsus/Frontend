@@ -24,7 +24,7 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
-RUN flutter build web -t lib/main.dart --web-renderer html --web-browser-flag "--disable-web-security"
+RUN flutter build web -t lib/main.dart --web-renderer html
 
 # Stage 2 - Create the run-time image
 FROM nginx:1.21.1-alpine
